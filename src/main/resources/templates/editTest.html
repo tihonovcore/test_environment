@@ -27,11 +27,16 @@
     </tbody>
 </table>
 
+<hr>
+
 <form th:action="'/tests/' + ${testId} + '/edit/question/add'" method="post">
+    <div>
     <label>
         Question
         <input  type="text" name="question">
     </label>
+    </div>
+    <div>
     <label>
         <select id="number_of_questions" name="select">
         <option value="2">2 questions</option>
@@ -39,22 +44,43 @@
         <option value="4" selected>4 questions</option>
         </select>
     </label>
-    <label id="answer_1">
+    </div>
+
+    <div id="answer_1">
+    <label>
         Answer 1
         <input type="text" name="answer_1">
+        Is correct
+        <input type="checkbox" name="answer_is_correct_1">
     </label>
-    <label id="answer_2">
+    </div>
+
+    <div id="answer_2">
+    <label>
         Answer 2
         <input type="text" name="answer_2">
+        Is correct
+        <input type="checkbox" name="answer_is_correct_2">
     </label>
-    <label id="answer_3">
+    </div>
+
+    <div id="answer_3">
+    <label>
         Answer 3
         <input type="text" name="answer_3">
+        Is correct
+        <input type="checkbox" name="answer_is_correct_3">
     </label>
-    <label id="answer_4">
+    </div>
+
+    <div id="answer_4">
+    <label>
         Answer 4
         <input type="text" name="answer_4">
+        Is correct
+        <input type="checkbox" name="answer_is_correct_4">
     </label>
+    </div>
     <input type="submit" value="Add new question">
 </form>
 

@@ -69,7 +69,7 @@ public class TestsController {
         for (int i = 0; i < numberOfAnswers; i++) {
             Answer answer = new Answer();
             answer.setAnswer(request.getParameter("answer_" + (i + 1)));
-            answer.setCorrect(false); //TODO
+            answer.setCorrect(request.getParameterMap().containsKey("answer_is_correct_" + (i + 1)));
             answers.add(answer);
         }
 

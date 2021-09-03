@@ -6,7 +6,7 @@ select.onchange = (elem) => {
     const display = new Array(n)
     for (let i = 0; i < n; i++) {
         if (i <= lastDisplayable) {
-            display[i] = 'block'
+            display[i] = ''
         } else {
             display[i] = 'none'
         }
