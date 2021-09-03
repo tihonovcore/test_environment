@@ -5,6 +5,24 @@
     <title>Tests</title>
 </head>
 <body>
-<a href="tests/add">Add</a>
+<a href="tests/add">Add new test</a>
+
+<table>
+    <thead>
+    <tr>
+        <th> Title </th>
+        <th> Description </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="test : ${testsList}">
+        <!--/*@thymesVar id="test" type="com.tihonovcore.testenv.model.Test"*/-->
+        <td><span th:text="${test.getTitle()}"> Title </span></td>
+        <td><span th:text="${test.getDescription()}"> Author </span></td>
+    </tr>
+    </tbody>
+</table>
+
+
 </body>
 </html>

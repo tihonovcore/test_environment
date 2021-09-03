@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Edit ' + ${title} + ' test'"></title>
+
+    <link rel="stylesheet" href="/editTest.css">
+</head>
+<body>
+<h3 th:text="${title}"></h3>
+<table>
+    <thead>
+    <tr>
+        Questions
+    </tr>
+    <tr>
+        Answers
+    </tr>
+    </thead>
+
+    <tbody>
+    <!--/*@thymesVar id="question" type="com.tihonovcore.testenv.model.Question"*/-->
+    <tr th:each="question : ${questions}">
+        <td th:text="${question.getQuestion()}"></td>
+        <td th:text="${question.getAnswers()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="'/tests/' + ${testId} + '/edit/question/add'" method="post">
+    <label>
+        Question
+        <input  type="text" name="question">
+    </label>
+    <label>
+        <select id="number_of_questions" name="select">
+        <option value="2">2 questions</option>
+        <option value="3">3 questions</option>
+        <option value="4" selected>4 questions</option>
+        </select>
+    </label>
+    <label id="answer_1">
+        Answer 1
+        <input type="text" name="answer_1">
+    </label>
+    <label id="answer_2">
+        Answer 2
+        <input type="text" name="answer_2">
+    </label>
+    <label id="answer_3">
+        Answer 3
+        <input type="text" name="answer_3">
+    </label>
+    <label id="answer_4">
+        Answer 4
+        <input type="text" name="answer_4">
+    </label>
+    <input type="submit" value="Add new question">
+</form>
+
+<script src="/numberOfQuestions.js"></script>
+</body>
+</html>
