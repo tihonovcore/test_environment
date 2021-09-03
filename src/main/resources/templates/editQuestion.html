@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit question</title>
+
+    <link rel="stylesheet" href="/editTest.css">
+</head>
+<body>
+<form th:action="'/tests/' + ${testId} + '/question/' + ${questionId} + '/edit'" method="post">
+    <div>
+        <label>
+            Question
+            <input type="text" name="question" th:value="${question.getQuestion()}">
+        </label>
+    </div>
+    <div>
+        <label>
+            <select id="number_of_questions" name="select">
+                <option value="2">2 questions</option>
+                <option value="3">3 questions</option>
+                <option value="4" selected>4 questions</option>
+            </select>
+        </label>
+    </div>
+
+    <div id="answer_1">
+        <label>
+            Answer 1
+            <input type="text" name="answer_1" th:value="${question.getAnswerByIndex(0)}">
+            Is correct
+            <input type="checkbox" name="answer_is_correct_1" th:checked="${question.getIsCorrectByIndex(0)}">
+        </label>
+    </div>
+
+    <div id="answer_2">
+        <label>
+            Answer 2
+            <input type="text" name="answer_2" th:value="${question.getAnswerByIndex(1)}">
+            Is correct
+            <input type="checkbox" name="answer_is_correct_2" th:checked="${question.getIsCorrectByIndex(1)}">
+        </label>
+    </div>
+
+    <div id="answer_3">
+        <label>
+            Answer 3
+            <input type="text" name="answer_3" th:value="${question.getAnswerByIndex(2)}">
+            Is correct
+            <input type="checkbox" name="answer_is_correct_3" th:checked="${question.getIsCorrectByIndex(2)}">
+        </label>
+    </div>
+
+    <div id="answer_4">
+        <label>
+            Answer 4
+            <input type="text" name="answer_4" th:value="${question.getAnswerByIndex(3)}">
+            Is correct
+            <input type="checkbox" name="answer_is_correct_4" th:checked="${question.getIsCorrectByIndex(3)}">
+        </label>
+    </div>
+    <input type="submit" value="Update">
+    <a th:href="'/tests/' + ${testId} + '/edit'">Cancel</a>
+</form>
+
+<script src="/numberOfQuestions.js"></script>
+</body>
+</html>

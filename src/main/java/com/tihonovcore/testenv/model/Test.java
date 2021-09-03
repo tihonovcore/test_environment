@@ -9,6 +9,18 @@ public class Test {
     private String description;
     private List<Question> questions;
 
+    public Test() {}
+
+    public Test(Test test) {
+        this.id = test.id;
+        this.title = test.title;
+        this.description = test.description;
+        this.questions = new ArrayList<>();
+        for (Question q : test.questions) {
+            this.questions.add(new Question(q));
+        }
+    }
+
     public int getId() {
         return id;
     }
@@ -46,5 +58,15 @@ public class Test {
 
     public void addQuestion(Question question) {
         this.questions.add(question);
+    }
+
+    public Question findQuestionById(int questionId) {
+        //noinspection OptionalGetWithoutIsPresent
+        return this.questions.stream().filter(q -> q.getId() == questionId).findFirst().get();
+    }
+
+    public void updateQuestionById(int questionId, Question newValue) {
+        this.questions.removeIf(q -> q.getId() == questionId);
+        this.questions.add(newValue);
     }
 }

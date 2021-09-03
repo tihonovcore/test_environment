@@ -7,14 +7,15 @@
     <link rel="stylesheet" href="/editTest.css">
 </head>
 <body>
+<a href="/tests">All tests</a>
+
 <h3 th:text="${title}"></h3>
 <table>
     <thead>
     <tr>
-        Questions
-    </tr>
-    <tr>
-        Answers
+        <td>Questions</td>
+        <td>Answers</td>
+        <td></td>
     </tr>
     </thead>
 
@@ -23,6 +24,7 @@
     <tr th:each="question : ${questions}">
         <td th:text="${question.getQuestion()}"></td>
         <td th:text="${question.getAnswers()}"></td>
+        <td><a th:href="'/tests/' + ${testId} + '/question/' + ${question.getId()} + '/edit'">Edit question</a></td>
     </tr>
     </tbody>
 </table>

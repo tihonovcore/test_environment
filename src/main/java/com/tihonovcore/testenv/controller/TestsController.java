@@ -58,11 +58,7 @@ public class TestsController {
         return "editTest";
     }
 
-    @PostMapping("tests/{testId}/edit/question/add")
-    public String testsAddNewQuestion(
-            HttpServletRequest request,
-            @PathVariable("testId") int testId
-    ) {
+    private List<Answer> readAnswersFromRequest(HttpServletRequest request) {
         int numberOfAnswers = Integer.parseInt(request.getParameter("select"));
 
         List<Answer> answers = new ArrayList<>();
@@ -73,14 +69,58 @@ public class TestsController {
             answers.add(answer);
         }
 
+        return answers;
+    }
+
+    @PostMapping("tests/{testId}/edit/question/add")
+    public String testsAddNewQuestion(
+            HttpServletRequest request,
+            @PathVariable("testId") int testId
+    ) {
         Question question = new Question();
+        question.setId(dao.getFreeId());
         question.setQuestion(request.getParameter("question"));
-        question.setAnswers(answers);
+        question.setAnswers(readAnswersFromRequest(request));
 
         Test test = dao.findTestById(testId);
-        test.addQuestion(question);
-        dao.updateTest(testId, test);
+        Test newTest = new Test(test);
+        newTest.addQuestion(question);
+        dao.updateTest(testId, newTest);
 
         return "redirect:/tests/{testId}/edit";
+    }
+
+    @GetMapping("/tests/{testId}/question/{questionId}/edit")
+    public String editQuestion(
+            @PathVariable("testId") int testId,
+            @PathVariable("questionId") int questionId,
+            ModelMap model
+    ) {
+        Test test = dao.findTestById(testId);
+        Question question = test.findQuestionById(questionId);
+
+        model.addAttribute("question", question);
+        model.addAttribute("testId", test.getId());
+
+        return "editQuestion";
+    }
+
+    @PostMapping("/tests/{testId}/question/{questionId}/edit")
+    public String editQuestion(
+            HttpServletRequest request,
+            @PathVariable("testId") int testId,
+            @PathVariable("questionId") int questionId
+    ) {
+        Question question = new Question();
+        question.setId(questionId);
+        question.setQuestion(request.getParameter("question"));
+        question.setAnswers(readAnswersFromRequest(request));
+
+        Test test = dao.findTestById(testId);
+        Test newTest = new Test(test);
+        newTest.updateQuestionById(questionId, question);
+        dao.updateTest(testId, newTest);
+
+        return "redirect:/tests/" + testId + "/edit";
     }
 }

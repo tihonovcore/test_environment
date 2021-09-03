@@ -5,13 +5,14 @@
     <title>Tests</title>
 </head>
 <body>
-<a href="tests/add">Add new test</a>
+<a href="/tests/add">Add new test</a>
 
 <table>
     <thead>
     <tr>
-        <th> Title</th>
-        <th> Description</th>
+        <td>Title</td>
+        <td>Description</td>
+        <td></td>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <!--/*@thymesVar id="test" type="com.tihonovcore.testenv.model.Test"*/-->
         <td><span th:text="${test.getTitle()}"> Title </span></td>
         <td><span th:text="${test.getDescription()}"> Author </span></td>
+        <td><a th:href="'/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
     </tr>
     </tbody>
 </table>
