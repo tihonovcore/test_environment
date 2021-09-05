@@ -1,8 +1,18 @@
 package com.tihonovcore.testenv.model;
 
+import javax.persistence.*;
+
+@Entity(name = "answers")
 public class Answer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "answer")
     private String answer;
+
+    @Column(name = "iscorrect")
     private boolean isCorrect;
 
     public Answer() {}

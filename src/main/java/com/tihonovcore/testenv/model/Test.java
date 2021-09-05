@@ -1,12 +1,28 @@
 package com.tihonovcore.testenv.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name = "tests")
 public class Test {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "description")
     private String description;
+
+    @OneToMany(targetEntity = Question.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "test_has_question",
+            joinColumns = { @JoinColumn(name = "tid") },
+            inverseJoinColumns = { @JoinColumn(name = "qid") }
+    )
     private List<Question> questions;
 
     public Test() {}
