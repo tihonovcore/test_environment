@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${test.getTitle()}"></title>
+</head>
+<body>
+<h2 th:text="${test.getTitle()}"></h2>
+<p th:text="${test.getDescription()}"></p>
+
+<form th:action="'/user/' + ${user.getId()} + '/dotest/' + ${test.getId()}" method="post">
+    <!--/*@thymesVar id="question" type="com.tihonovcore.testenv.model.Question"*/-->
+    <div th:each="question : ${test.getQuestions()}">
+        <h4 th:text="${question.getQuestion()}"></h4>
+
+        <!--/*@thymesVar id="answer" type="com.tihonovcore.testenv.model.Answer"*/-->
+        <div th:each="answer : ${question.getAnswers()}">
+            <label>
+                <span th:text="${answer.getAnswer()}"></span>
+                <input type="checkbox" th:name="${question.getId()} + '_' + ${answer.getId()}">
+            </label>
+        </div>
+    </div>
+
+    <input type="submit" value="Send">
+</form>
+</body>
+</html>
