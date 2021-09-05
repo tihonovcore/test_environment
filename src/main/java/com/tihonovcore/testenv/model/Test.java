@@ -17,7 +17,7 @@ public class Test {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(targetEntity = Question.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "test_has_question",
             joinColumns = { @JoinColumn(name = "tid") },

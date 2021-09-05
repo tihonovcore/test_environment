@@ -1,9 +1,10 @@
 package com.tihonovcore.testenv.controller;
 
-import com.tihonovcore.testenv.dao.InMemoryDao;
 import com.tihonovcore.testenv.model.Answer;
 import com.tihonovcore.testenv.model.Question;
 import com.tihonovcore.testenv.model.Test;
+import com.tihonovcore.testenv.repository.QuestionRepository;
+import com.tihonovcore.testenv.repository.TestRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +17,17 @@ import java.util.List;
 
 @Controller
 public class TestsController {
-    private final InMemoryDao dao;
+    private final TestRepository testRepository;
+    private final QuestionRepository questionRepository;
 
-    public TestsController(InMemoryDao dao) {
-        this.dao = dao;
+    public TestsController(TestRepository testRepository, QuestionRepository questionRepository) {
+        this.testRepository = testRepository;
+        this.questionRepository = questionRepository;
     }
 
     @GetMapping("tests")
     public String tests(ModelMap model) {
-        model.addAttribute("testsList", dao.getAllTests());
+        model.addAttribute("testsList", testRepository.findAll());
         return "tests";
     }
 
@@ -41,15 +44,14 @@ public class TestsController {
         Test test = new Test();
         test.setTitle(title);
         test.setDescription(description);
-        test.setId(dao.getFreeId());
-        dao.addTest(test);
+        testRepository.save(test);
 
         return "redirect:/tests/" + test.getId() + "/edit";
     }
 
     @GetMapping("tests/{id}/edit")
     public String testsEdit(@PathVariable("id") int id, ModelMap model) {
-        Test test = dao.findTestById(id);
+        Test test = testRepository.getById(id);
 
         model.addAttribute("testId", test.getId());
         model.addAttribute("title", test.getTitle());
@@ -78,14 +80,12 @@ public class TestsController {
             @PathVariable("testId") int testId
     ) {
         Question question = new Question();
-        question.setId(dao.getFreeId());
         question.setQuestion(request.getParameter("question"));
         question.setAnswers(readAnswersFromRequest(request));
 
-        Test test = dao.findTestById(testId);
-        Test newTest = new Test(test);
-        newTest.addQuestion(question);
-        dao.updateTest(testId, newTest);
+        Test test = testRepository.getById(testId);
+        test.getQuestions().add(question);
+        testRepository.save(test);
 
         return "redirect:/tests/{testId}/edit";
     }
@@ -96,11 +96,9 @@ public class TestsController {
             @PathVariable("questionId") int questionId,
             ModelMap model
     ) {
-        Test test = dao.findTestById(testId);
-        Question question = test.findQuestionById(questionId);
-
+        Question question = questionRepository.getById(questionId);
         model.addAttribute("question", question);
-        model.addAttribute("testId", test.getId());
+        model.addAttribute("testId", testId);
 
         return "editQuestion";
     }
@@ -111,15 +109,10 @@ public class TestsController {
             @PathVariable("testId") int testId,
             @PathVariable("questionId") int questionId
     ) {
-        Question question = new Question();
-        question.setId(questionId);
+        Question question = questionRepository.getById(questionId);
         question.setQuestion(request.getParameter("question"));
         question.setAnswers(readAnswersFromRequest(request));
-
-        Test test = dao.findTestById(testId);
-        Test newTest = new Test(test);
-        newTest.updateQuestionById(questionId, question);
-        dao.updateTest(testId, newTest);
+        questionRepository.save(question);
 
         return "redirect:/tests/" + testId + "/edit";
     }
