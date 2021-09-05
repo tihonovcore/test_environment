@@ -11,7 +11,7 @@ public class Question {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "question")
+    @Column(name = "question", nullable = false)
     private String question;
 
     @OneToMany(cascade = CascadeType.ALL)

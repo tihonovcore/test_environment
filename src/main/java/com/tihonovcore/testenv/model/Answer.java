@@ -9,10 +9,10 @@ public class Answer {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "answer")
+    @Column(name = "answer", nullable = false)
     private String answer;
 
-    @Column(name = "iscorrect")
+    @Column(name = "iscorrect", nullable = false)
     private boolean isCorrect;
 
     public Answer() {}

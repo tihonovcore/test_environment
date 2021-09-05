@@ -11,10 +11,10 @@ public class Test {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL)
