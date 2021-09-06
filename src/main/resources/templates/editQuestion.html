@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/editTest.css">
 </head>
 <body>
-<form th:action="'/tests/' + ${testId} + '/question/' + ${questionId} + '/edit'" method="post">
+<form th:action="'/user/' + ${userId} + '/tests/' + ${testId} + '/question/' + ${questionId} + '/edit'" method="post">
     <div>
         <label>
             Question
@@ -60,7 +60,7 @@
         </label>
     </div>
     <input type="submit" value="Update">
-    <a th:href="'/tests/' + ${testId} + '/edit'">Cancel</a>
+    <a th:href="'/user/' + ${userId} + '/tests/' + ${testId} + '/edit'">Cancel</a>
 </form>
 
 <script src="/numberOfQuestions.js"></script>
