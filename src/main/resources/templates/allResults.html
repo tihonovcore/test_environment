@@ -10,7 +10,7 @@
 <div th:each="result : ${results}">
     <span th:text="'User: ' + ${result.getUser().getName()}"></span>
     <span th:text="'Score: ' + ${result.getScore()}"></span>
-    <a th:href="'/result/' + ${result.getId()}">Full result</a>
+    <a th:href="'user/' + ${result.getUser().getId()} + '/result/' + ${result.getId()}">Full result</a>
 </div>
 </body>
 </html>

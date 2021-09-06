@@ -22,13 +22,4 @@ public class UserController {
 
         return "user";
     }
-
-    @GetMapping("/user/new/{name}")
-    public String createUser(@PathVariable("name") String name) {
-        User user = new User();
-        user.setName(name);
-        user = userRepository.save(user);
-
-        return "redirect:/user/" + user.getId();
-    }
 }

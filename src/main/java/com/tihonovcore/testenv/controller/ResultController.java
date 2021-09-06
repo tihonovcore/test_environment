@@ -26,8 +26,9 @@ public class ResultController {
         this.testRepository = testRepository;
     }
 
-    @GetMapping("/result/{resultId}")
+    @GetMapping("/user/{userId}/result/{resultId}")
     public String getResult(
+            @PathVariable("userId") int userId,
             @PathVariable("resultId") int resultId,
             ModelMap model
     ) {
@@ -62,13 +63,15 @@ public class ResultController {
         return "result";
     }
 
-    @GetMapping("/result/test/{testId}")
+    @GetMapping("/user/{userId}/result/test/{testId}")
     public String getAllResultsOfTest(
+            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
             ModelMap model
     ) {
         Test test = testRepository.getById(testId);
 
+        model.addAttribute("userId", userId);
         model.addAttribute("title", test.getTitle());
         model.addAttribute("results", test.getResults());
 

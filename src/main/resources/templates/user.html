@@ -5,7 +5,10 @@
     <title>User</title>
 </head>
 <body>
-<a th:href="'/user/' + ${user.getId()}" th:text="${user.getName()}"></a>
+<h4 th:text="${user.getName()}"></h4>
+<form action="/" method="get">
+    <input type="submit" value="Logout">
+</form>
 
 <h4>Passed tests</h4>
 <table>
@@ -21,7 +24,7 @@
         <!--/*@thymesVar id="result" type="com.tihonovcore.testenv.model.Result"*/-->
         <td><span th:text="${result.getTid()}"> Test id </span></td>
         <td><span th:text="${result.getScore()}"> Score </span></td>
-        <td><a th:href="'/result/' + ${result.getId()}">Full result</a></td>
+        <td><a th:href="'/user/' + ${user.getId()} + '/result/' + ${result.getId()}">Full result</a></td>
     </tr>
     </tbody>
 </table>
@@ -38,7 +41,7 @@
     <tr th:each="test : ${user.getAuthor()}">
         <!--/*@thymesVar id="test" type="com.tihonovcore.testenv.model.Test"*/-->
         <td><span th:text="${test.getTitle()}"> Test title </span></td>
-        <td><a th:href="'/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
+        <td><a th:href="'/user/' + ${user.getId()} + '/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
     </tr>
     </tbody>
 </table>

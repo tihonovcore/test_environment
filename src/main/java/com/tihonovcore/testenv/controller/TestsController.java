@@ -29,20 +29,21 @@ public class TestsController {
         this.questionRepository = questionRepository;
     }
 
-    @GetMapping("tests")
-    public String tests(ModelMap model) {
+    @GetMapping("/user/{userId}/tests")
+    public String tests(@PathVariable("userId") int userId, ModelMap model) {
+        model.addAttribute("userId", userId);
         model.addAttribute("testsList", testRepository.findAll());
         return "tests";
     }
 
-    @GetMapping("/user/{id}/tests/add")
-    public String testsAdd(@PathVariable("id") int id, ModelMap model) {
-        model.addAttribute("authorId", id);
+    @GetMapping("/user/{userId}/tests/add")
+    public String testsAdd(@PathVariable("userId") int userId, ModelMap model) {
+        model.addAttribute("authorId", userId);
         return "addTest";
     }
 
-    @PostMapping("/user/{id}/tests/new")
-    public String testsNew(@PathVariable("id") int authorId, HttpServletRequest request) {
+    @PostMapping("/user/{userId}/tests/new")
+    public String testsNew(@PathVariable("userId") int authorId, HttpServletRequest request) {
         User author = userRepository.getById(authorId);
 
         String title = request.getParameter("title");
@@ -54,14 +55,19 @@ public class TestsController {
         test.setDescription(description);
         testRepository.save(test);
 
-        return "redirect:/tests/" + test.getId() + "/edit";
+        return "redirect:/user/{userId}/tests/" + test.getId() + "/edit";
     }
 
-    @GetMapping("tests/{id}/edit")
-    public String testsEdit(@PathVariable("id") int id, ModelMap model) {
-        Test test = testRepository.getById(id);
+    @GetMapping("/user/{userId}/tests/{testId}/edit")
+    public String testsEdit(
+            @PathVariable("userId") int userId,
+            @PathVariable("testId") int testId,
+            ModelMap model
+    ) {
+        Test test = testRepository.getById(testId);
 
-        model.addAttribute("testId", test.getId());
+        model.addAttribute("userId", userId);
+        model.addAttribute("testId", testId);
         model.addAttribute("title", test.getTitle());
         model.addAttribute("questions", test.getQuestions());
 
@@ -82,9 +88,10 @@ public class TestsController {
         return answers;
     }
 
-    @PostMapping("tests/{testId}/edit/question/add")
+    @PostMapping("/user/{userId}/tests/{testId}/edit/question/add")
     public String testsAddNewQuestion(
             HttpServletRequest request,
+            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId
     ) {
         Question question = new Question();
@@ -95,25 +102,28 @@ public class TestsController {
         test.getQuestions().add(question);
         testRepository.save(test);
 
-        return "redirect:/tests/{testId}/edit";
+        return "redirect:/user/{userId}/tests/{testId}/edit";
     }
 
-    @GetMapping("/tests/{testId}/question/{questionId}/edit")
+    @GetMapping("/user/{userId}/tests/{testId}/question/{questionId}/edit")
     public String editQuestion(
+            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
             @PathVariable("questionId") int questionId,
             ModelMap model
     ) {
         Question question = questionRepository.getById(questionId);
         model.addAttribute("question", question);
+        model.addAttribute("userId", userId);
         model.addAttribute("testId", testId);
 
         return "editQuestion";
     }
 
-    @PostMapping("/tests/{testId}/question/{questionId}/edit")
+    @PostMapping("/user/{userId}/tests/{testId}/question/{questionId}/edit")
     public String editQuestion(
             HttpServletRequest request,
+            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
             @PathVariable("questionId") int questionId
     ) {
@@ -122,6 +132,6 @@ public class TestsController {
         question.setAnswers(readAnswersFromRequest(request));
         questionRepository.save(question);
 
-        return "redirect:/tests/" + testId + "/edit";
+        return "redirect:/user/{userId}/tests/{testId}/edit";
     }
 }
