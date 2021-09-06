@@ -16,12 +16,7 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Test> author;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_pass_test_with_result",
-            joinColumns = { @JoinColumn(name = "uid") },
-            inverseJoinColumns = { @JoinColumn(name = "rid" )}
-    )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Result> pass;
 
     public int getId() {

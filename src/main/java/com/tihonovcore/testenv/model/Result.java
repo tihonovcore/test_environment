@@ -16,8 +16,13 @@ public class Result {
     @Column(name = "score", nullable = false)
     private int score;
 
-    @Column(name = "testId", nullable = false)
-    private int tid;
+    @ManyToOne
+    @JoinColumn(name = "testId")
+    private Test test;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     public int getId() {
         return id;
@@ -43,11 +48,23 @@ public class Result {
         this.score = score;
     }
 
-    public int getTid() {
-        return tid;
+    public Test getTest() {
+        return test;
     }
 
-    public void setTid(int tid) {
-        this.tid = tid;
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
+    public int getTid() {
+        return test.getId();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

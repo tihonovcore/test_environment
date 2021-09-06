@@ -1,6 +1,7 @@
 package com.tihonovcore.testenv.controller;
 
 import com.tihonovcore.testenv.model.Result;
+import com.tihonovcore.testenv.model.Test;
 import com.tihonovcore.testenv.model.User;
 import com.tihonovcore.testenv.repository.AnswerRepository;
 import com.tihonovcore.testenv.repository.TestRepository;
@@ -63,12 +64,15 @@ public class DoTestController {
             }
         }
 
+        User user = userRepository.getById(userId);
+        Test test = testRepository.getById(testId);
+
         Result result = new Result();
-        result.setTid(testId);
+        result.setTest(test);
+        result.setUser(user);
         result.setScore(score);
         result.setAnswers(answers);
 
-        User user = userRepository.getById(userId);
         user.getPass().add(result);
         userRepository.save(user);
 

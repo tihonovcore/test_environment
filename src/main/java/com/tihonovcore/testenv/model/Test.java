@@ -29,6 +29,9 @@ public class Test {
     @JoinColumn(name = "author")
     private User author;
 
+    @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
+    private List<Result> results;
+
     public Test() {}
 
     public Test(Test test) {
@@ -96,5 +99,13 @@ public class Test {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 }
