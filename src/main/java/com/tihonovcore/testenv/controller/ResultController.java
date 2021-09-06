@@ -61,4 +61,17 @@ public class ResultController {
 
         return "result";
     }
+
+    @GetMapping("/result/test/{testId}")
+    public String getAllResultsOfTest(
+            @PathVariable("testId") int testId,
+            ModelMap model
+    ) {
+        Test test = testRepository.getById(testId);
+
+        model.addAttribute("title", test.getTitle());
+        model.addAttribute("results", test.getResults());
+
+        return "allResults";
+    }
 }

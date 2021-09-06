@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} + ' results'"></title>
+</head>
+<body>
+
+<!--/*@thymesVar id="result" type="com.tihonovcore.testenv.model.Result"*/-->
+<div th:each="result : ${results}">
+    <span th:text="'User: ' + ${result.getUser().getName()}"></span>
+    <span th:text="'Score: ' + ${result.getScore()}"></span>
+    <a th:href="'/result/' + ${result.getId()}">Full result</a>
+</div>
+</body>
+</html>
