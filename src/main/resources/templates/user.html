@@ -11,6 +11,7 @@
 </form>
 
 <h4>Passed tests</h4>
+<a th:href="'/user/' + ${user.getId()} + '/tests/'">All tests</a>
 <table>
     <thead>
     <tr>
@@ -30,6 +31,7 @@
 </table>
 
 <h4>Authored tests</h4>
+<a th:href="'/user/' + ${user.getId()} + '/tests/add'">Add new test</a>
 <table>
     <thead>
     <tr>

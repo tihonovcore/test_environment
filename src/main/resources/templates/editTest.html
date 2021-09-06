@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/editTest.css">
 </head>
 <body>
+<a th:href="'/user/' + ${userId}">My page</a>
 <a th:href="'/user/' + ${userId} + '/tests'">All tests</a>
 
 <h3 th:text="${title}"></h3>

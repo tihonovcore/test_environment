@@ -5,6 +5,8 @@
     <title th:text="${test.getTitle()}"></title>
 </head>
 <body>
+<a th:href="'/user/' + ${user.getId()}">My page</a>
+
 <h2 th:text="${test.getTitle()}"></h2>
 <p th:text="${test.getDescription()}"></p>
 

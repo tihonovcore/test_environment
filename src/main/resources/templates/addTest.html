@@ -5,6 +5,8 @@
     <title>Add test</title>
 </head>
 <body>
+<a th:href="'/user/' + ${authorId}">My page</a>
+
 Add test
 
 <form th:action="'/user/' + ${authorId} + '/tests/new'" method="post">

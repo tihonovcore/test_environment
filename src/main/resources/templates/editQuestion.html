@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/editTest.css">
 </head>
 <body>
+<a th:href="'/user/' + ${userId}">My page</a>
+
 <form th:action="'/user/' + ${userId} + '/tests/' + ${testId} + '/question/' + ${questionId} + '/edit'" method="post">
     <div>
         <label>

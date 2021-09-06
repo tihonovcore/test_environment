@@ -5,6 +5,7 @@
     <title th:text="${title} + ' results'"></title>
 </head>
 <body>
+<a th:href="'/user/' + ${userId}">My page</a>
 
 <!--/*@thymesVar id="result" type="com.tihonovcore.testenv.model.Result"*/-->
 <div th:each="result : ${results}">
