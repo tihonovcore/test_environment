@@ -5,7 +5,7 @@
     <title>User</title>
 </head>
 <body>
-<h3 th:value="${user.getName()}"></h3>
+<a th:href="'/user/' + ${user.getId()}" th:text="${user.getName()}"></a>
 
 <h4>Passed tests</h4>
 <table>
