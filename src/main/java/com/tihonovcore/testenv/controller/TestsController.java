@@ -7,15 +7,16 @@ import com.tihonovcore.testenv.model.User;
 import com.tihonovcore.testenv.repository.QuestionRepository;
 import com.tihonovcore.testenv.repository.TestRepository;
 import com.tihonovcore.testenv.repository.UserRepository;
+import com.tihonovcore.testenv.validation.QuestionValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class TestsController {
@@ -121,17 +122,32 @@ public class TestsController {
     }
 
     @PostMapping("/user/{userId}/tests/{testId}/question/{questionId}/edit")
-    public String editQuestion(
+    public ModelAndView editQuestion(
             HttpServletRequest request,
             @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
             @PathVariable("questionId") int questionId
     ) {
+        List<Answer> answers = readAnswersFromRequest(request);
+
         Question question = questionRepository.getById(questionId);
         question.setQuestion(request.getParameter("question"));
-        question.setAnswers(readAnswersFromRequest(request));
+        question.setAnswers(answers);
+
+        if (QuestionValidator.validate(question)) {
+            ModelAndView result = new ModelAndView("editQuestion");
+
+            result.addObject("question", question);
+            result.addObject("messages", QuestionValidator.messages);
+            result.addObject("hasErrors", true);
+            result.addObject("userId", userId);
+            result.addObject("testId", testId);
+
+            return result;
+        }
+
         questionRepository.save(question);
 
-        return "redirect:/user/{userId}/tests/{testId}/edit";
+        return new ModelAndView("redirect:/user/{userId}/tests/{testId}/edit");
     }
 }

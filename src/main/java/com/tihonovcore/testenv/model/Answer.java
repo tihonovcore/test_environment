@@ -1,6 +1,7 @@
 package com.tihonovcore.testenv.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity(name = "answers")
 public class Answer {
@@ -10,6 +11,7 @@ public class Answer {
     private int id;
 
     @Column(name = "answer", nullable = false)
+    @Size(min = 1, max = 255, message = "Answer size should be between 1 and 255")
     private String answer;
 
     @Column(name = "iscorrect", nullable = false)
