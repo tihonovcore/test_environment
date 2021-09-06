@@ -7,7 +7,7 @@
 <body>
 Add test
 
-<form action="/tests/new" method="post">
+<form th:action="'/user/' + ${authorId} + '/tests/new'" method="post">
     <label>
         Название
         <input type="text" name="title">

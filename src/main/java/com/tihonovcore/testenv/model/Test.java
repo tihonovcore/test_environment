@@ -25,6 +25,10 @@ public class Test {
     )
     private List<Question> questions;
 
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private User author;
+
     public Test() {}
 
     public Test(Test test) {
@@ -84,5 +88,13 @@ public class Test {
     public void updateQuestionById(int questionId, Question newValue) {
         this.questions.removeIf(q -> q.getId() == questionId);
         this.questions.add(newValue);
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

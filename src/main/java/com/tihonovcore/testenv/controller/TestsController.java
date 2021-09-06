@@ -3,8 +3,10 @@ package com.tihonovcore.testenv.controller;
 import com.tihonovcore.testenv.model.Answer;
 import com.tihonovcore.testenv.model.Question;
 import com.tihonovcore.testenv.model.Test;
+import com.tihonovcore.testenv.model.User;
 import com.tihonovcore.testenv.repository.QuestionRepository;
 import com.tihonovcore.testenv.repository.TestRepository;
+import com.tihonovcore.testenv.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +20,12 @@ import java.util.List;
 @Controller
 public class TestsController {
     private final TestRepository testRepository;
+    private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
 
-    public TestsController(TestRepository testRepository, QuestionRepository questionRepository) {
+    public TestsController(TestRepository testRepository, UserRepository userRepository, QuestionRepository questionRepository) {
         this.testRepository = testRepository;
+        this.userRepository = userRepository;
         this.questionRepository = questionRepository;
     }
 
@@ -31,18 +35,22 @@ public class TestsController {
         return "tests";
     }
 
-    @GetMapping("tests/add")
-    public String testsAdd() {
+    @GetMapping("/user/{id}/tests/add")
+    public String testsAdd(@PathVariable("id") int id, ModelMap model) {
+        model.addAttribute("authorId", id);
         return "addTest";
     }
 
-    @PostMapping("tests/new")
-    public String testsNew(HttpServletRequest request) {
+    @PostMapping("/user/{id}/tests/new")
+    public String testsNew(@PathVariable("id") int authorId, HttpServletRequest request) {
+        User author = userRepository.getById(authorId);
+
         String title = request.getParameter("title");
         String description = request.getParameter("description");
 
         Test test = new Test();
         test.setTitle(title);
+        test.setAuthor(author);
         test.setDescription(description);
         testRepository.save(test);
 

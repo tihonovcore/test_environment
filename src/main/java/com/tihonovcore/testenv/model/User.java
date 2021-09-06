@@ -13,12 +13,7 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_is_author_of_test",
-            joinColumns = { @JoinColumn(name = "uid") },
-            inverseJoinColumns = { @JoinColumn(name = "tid") }
-    )
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Test> author;
 
     @OneToMany(cascade = CascadeType.ALL)
