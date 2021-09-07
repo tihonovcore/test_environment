@@ -2,6 +2,7 @@ package com.tihonovcore.testenv.controller;
 
 import com.tihonovcore.testenv.model.User;
 import com.tihonovcore.testenv.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,16 @@ public class UserController {
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @GetMapping("/")
+    public String redirectAuthorized(Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/registration";
+        }
+
+        User user = (User) authentication.getPrincipal();
+        return "redirect:/user/" + user.getId();
     }
 
     @GetMapping("/user/{id}")
