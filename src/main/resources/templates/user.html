@@ -6,9 +6,7 @@
 </head>
 <body>
 <h4 th:text="${user.getName()}"></h4>
-<form action="/" method="get">
-    <input type="submit" value="Logout">
-</form>
+<a href="/logout">Logout</a>
 
 <h4>Passed tests</h4>
 <a th:href="'/user/' + ${user.getId()} + '/tests/'">All tests</a>
