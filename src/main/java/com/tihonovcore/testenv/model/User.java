@@ -1,10 +1,14 @@
 package com.tihonovcore.testenv.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -12,6 +16,12 @@ public class User {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "password")
+    private String password;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Role role;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Test> author;
@@ -49,5 +59,52 @@ public class User {
 
     public void setPass(List<Result> pass) {
         this.pass = pass;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(role);
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
