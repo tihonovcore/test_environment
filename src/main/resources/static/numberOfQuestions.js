@@ -1,5 +1,4 @@
-const select = document.querySelector('#number_of_questions')
-select.onchange = (elem) => {
+const update = (elem) => {
     const n = 4
     const lastDisplayable = elem.currentTarget.selectedIndex + 1
 
@@ -22,3 +21,7 @@ select.onchange = (elem) => {
         answers[i].style.display = display[i]
     }
 }
+
+const select = document.querySelector('#number_of_questions')
+update(elem = { currentTarget : select })
+select.onchange = update

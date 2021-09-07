@@ -17,18 +17,21 @@ public class QuestionValidator {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        boolean notValidNumberOfSelectedCheckboxes = question.getAnswers().stream().filter(Answer::isCorrect).count() != 1;
+        long countCorrectAnswers = question.getAnswers().stream().filter(Answer::isCorrect).count();
         messages = question.getAnswers().stream().map(a -> {
             List<String> message = validator.validate(a).stream()
                     .map(ConstraintViolation::getMessage)
                     .collect(Collectors.toList());
 
-            if (notValidNumberOfSelectedCheckboxes && a.isCorrect()) {
-                message.add("Expected only one correct answer");
+            if (countCorrectAnswers > 1 && a.isCorrect() || countCorrectAnswers == 0) {
+                message.add("Expected exact one correct answer");
             }
 
             return String.join(", ", message);
         }).collect(Collectors.toList());
+
+        //default values
+        messages.addAll(List.of("", "", "", ""));
 
         return messages.stream().anyMatch(m -> !m.isEmpty());
     }
