@@ -33,6 +33,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .disable()
                 .authorizeRequests()
                     .antMatchers("/registration").not().fullyAuthenticated()
+                    .antMatchers("/default.css").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()

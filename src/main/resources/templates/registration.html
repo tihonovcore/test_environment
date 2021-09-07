@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/default.css">
 </head>
 <body>
 <div><a href="/login">Login page</a></div>
@@ -16,8 +17,8 @@
         Password:
         <input type="password" name="password">
     </label>
-    <span style="color:red" th:text="${errorMessage == null ? '' : errorMessage }"></span>
     <input type="submit" value="Register">
 </form>
+<div style="color:red" th:text="${errorMessage == null ? '' : errorMessage }"></div>
 </body>
 </html>

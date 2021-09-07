@@ -1,0 +1,31 @@
+.header {
+    margin: 20px 0;
+    padding-left: 0;
+}
+
+.header_link {
+    background-color: bisque;
+    padding: 15px;
+}
+
+a[class=header_link]:hover {
+    background-color: cornsilk;
+}
+
+a {
+    color: dodgerblue;
+    text-decoration: none;
+}
+
+a:visited {
+    color: dodgerblue;
+}
+
+a:hover {
+    background-color: lightsteelblue;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
