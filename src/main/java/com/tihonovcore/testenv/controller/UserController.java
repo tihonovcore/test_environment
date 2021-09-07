@@ -40,4 +40,14 @@ public class UserController {
 
         return "user";
     }
+
+    @GetMapping("/users")
+    public String getAllUsers(Authentication authentication, ModelMap model) {
+        User user = (User) authentication.getPrincipal();
+
+        model.addAttribute("userId", user.getId());
+        model.addAttribute("users", userRepository.findAll());
+
+        return "allUsers";
+    }
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+</head>
+<body>
+<a th:href="'/user/' + ${userId}">My page</a>
+<a th:href="'/tests/'">All tests</a>
+
+<div th:each="user : ${users}">
+    <!--/*@thymesVar id="user" type="com.tihonovcore.testenv.model.User"*/-->
+    <a th:href="'/user/' + ${user.getId()}" th:text="${user.getName()}">Edit test</a>
+</div>
+</body>
+</html>
