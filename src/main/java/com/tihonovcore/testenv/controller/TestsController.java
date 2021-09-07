@@ -6,7 +6,6 @@ import com.tihonovcore.testenv.model.Test;
 import com.tihonovcore.testenv.model.User;
 import com.tihonovcore.testenv.repository.QuestionRepository;
 import com.tihonovcore.testenv.repository.TestRepository;
-import com.tihonovcore.testenv.repository.UserRepository;
 import com.tihonovcore.testenv.validation.QuestionValidator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -65,7 +64,7 @@ public class TestsController {
     }
 
     @GetMapping("/tests/{testId}/edit")
-    public String testsEdit(
+    public ModelAndView testsEdit(
             @PathVariable("testId") int testId,
             Authentication authentication,
             ModelMap model
@@ -74,8 +73,9 @@ public class TestsController {
         User user = (User) authentication.getPrincipal();
 
         if (user.getId() != test.getAuthor().getId()) {
-            System.out.println("No permissions");
-            //TODO
+            ModelAndView modelAndView = new ModelAndView("noPermission");
+            modelAndView.addObject("userId", user.getId());
+            return modelAndView;
         }
 
         model.addAttribute("userId", user.getId());
@@ -83,7 +83,7 @@ public class TestsController {
         model.addAttribute("title", test.getTitle());
         model.addAttribute("questions", test.getQuestions());
 
-        return "editTest";
+        return new ModelAndView("editTest");
     }
 
     private List<Answer> readAnswersFromRequest(HttpServletRequest request) {
@@ -101,7 +101,7 @@ public class TestsController {
     }
 
     @PostMapping("/tests/{testId}/edit/question/add")
-    public String testsAddNewQuestion(
+    public ModelAndView testsAddNewQuestion(
             @PathVariable("testId") int testId,
             Authentication authentication,
             HttpServletRequest request
@@ -110,8 +110,9 @@ public class TestsController {
         User user = (User) authentication.getPrincipal();
 
         if (user.getId() != test.getAuthor().getId()) {
-            System.out.println("No permissions");
-            //TODO
+            ModelAndView modelAndView = new ModelAndView("noPermission");
+            modelAndView.addObject("userId", user.getId());
+            return modelAndView;
         }
 
         Question question = new Question();
@@ -121,11 +122,11 @@ public class TestsController {
         test.getQuestions().add(question);
         testRepository.save(test);
 
-        return "redirect:/tests/{testId}/edit";
+        return new ModelAndView("redirect:/tests/{testId}/edit");
     }
 
     @GetMapping("/tests/{testId}/question/{questionId}/edit")
-    public String editQuestion(
+    public ModelAndView editQuestion(
             @PathVariable("testId") int testId,
             @PathVariable("questionId") int questionId,
             Authentication authentication,
@@ -135,8 +136,9 @@ public class TestsController {
         User user = (User) authentication.getPrincipal();
 
         if (user.getId() != test.getAuthor().getId()) {
-            System.out.println("No permissions");
-            //TODO
+            ModelAndView modelAndView = new ModelAndView("noPermission");
+            modelAndView.addObject("userId", user.getId());
+            return modelAndView;
         }
 
         Question question = questionRepository.getById(questionId);
@@ -144,7 +146,7 @@ public class TestsController {
         model.addAttribute("userId", user.getId());
         model.addAttribute("testId", testId);
 
-        return "editQuestion";
+        return new ModelAndView("editQuestion");
     }
 
     @PostMapping("/tests/{testId}/question/{questionId}/edit")
@@ -158,8 +160,9 @@ public class TestsController {
         User user = (User) authentication.getPrincipal();
 
         if (user.getId() != test.getAuthor().getId()) {
-            System.out.println("No permissions");
-            //TODO
+            ModelAndView modelAndView = new ModelAndView("noPermission");
+            modelAndView.addObject("userId", user.getId());
+            return modelAndView;
         }
 
         List<Answer> answers = readAnswersFromRequest(request);

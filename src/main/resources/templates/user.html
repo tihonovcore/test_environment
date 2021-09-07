@@ -6,7 +6,13 @@
 </head>
 <body>
 <h4 th:text="${user.getName()}"></h4>
-<a href="/logout">Logout</a>
+
+<div th:if="${user.getId() == currentUserId}">
+    <a href="/logout">Logout</a>
+</div>
+<div th:if="${user.getId() != currentUserId}">
+    <a th:href="'/user/' + ${currentUserId}">My page</a>
+</div>
 
 <h4>Passed tests</h4>
 <a th:href="'/tests/'">All tests</a>
@@ -23,8 +29,7 @@
         <!--/*@thymesVar id="result" type="com.tihonovcore.testenv.model.Result"*/-->
         <td><span th:text="${result.getTid()}"> Test id </span></td>
         <td><span th:text="${result.getScore()}"> Score </span></td>
-        <!-- TODO: show only for current user -->
-        <td><a th:href="'/result/' + ${result.getId()}">Full result</a></td>
+        <td><a th:if="${currentUserId == user.getId()}" th:href="'/result/' + ${result.getId()}">Full result</a></td>
     </tr>
     </tbody>
 </table>
@@ -42,10 +47,8 @@
     <tr th:each="test : ${user.getAuthor()}">
         <!--/*@thymesVar id="test" type="com.tihonovcore.testenv.model.Test"*/-->
         <td><span th:text="${test.getTitle()}"> Test title </span></td>
-        <!-- TODO: show only for current user -->
-        <td><a th:href="'/result/test/' + ${test.getId()}">All results</a></td>
-        <!-- TODO: show only for current user -->
-        <td><a th:href="'/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
+        <td><a th:if="${currentUserId == user.getId()}" th:href="'/result/test/' + ${test.getId()}">All results</a></td>
+        <td><a th:if="${currentUserId == user.getId()}" th:href="'/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
     </tr>
     </tbody>
 </table>

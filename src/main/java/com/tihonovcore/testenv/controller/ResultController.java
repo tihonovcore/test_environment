@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ResultController {
     }
 
     @GetMapping("/result/{resultId}")
-    public String getResult(
+    public ModelAndView getResult(
             @PathVariable("resultId") int resultId,
             Authentication authentication,
             ModelMap model
@@ -35,8 +36,9 @@ public class ResultController {
         User user = (User) authentication.getPrincipal();
 
         if (user.getId() != result.getUser().getId() && user.getId() != test.getAuthor().getId()) {
-            System.out.println("No permissions");
-            //TODO
+            ModelAndView modelAndView = new ModelAndView("noPermission");
+            modelAndView.addObject("userId", user.getId());
+            return modelAndView;
         }
 
         List<Answer> allAnswers = test.getQuestions().stream()
@@ -64,11 +66,11 @@ public class ResultController {
         model.addAttribute("result", result);
         model.addAttribute("answerResults", answerResults);
 
-        return "result";
+        return new ModelAndView("result");
     }
 
     @GetMapping("/result/test/{testId}")
-    public String getAllResultsOfTest(
+    public ModelAndView getAllResultsOfTest(
             @PathVariable("testId") int testId,
             Authentication authentication,
             ModelMap model
@@ -77,14 +79,15 @@ public class ResultController {
         User user = (User) authentication.getPrincipal();
 
         if (user.getId() != test.getAuthor().getId()) {
-            System.out.println("No permissions");
-            //TODO
+            ModelAndView modelAndView = new ModelAndView("noPermission");
+            modelAndView.addObject("userId", user.getId());
+            return modelAndView;
         }
 
         model.addAttribute("userId", user.getId());
         model.addAttribute("title", test.getTitle());
         model.addAttribute("results", test.getResults());
 
-        return "allResults";
+        return new ModelAndView("allResults");
     }
 }

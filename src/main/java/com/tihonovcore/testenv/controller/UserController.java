@@ -27,8 +27,15 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public String getUser(@PathVariable("id") int id, ModelMap model) {
+    public String getUser(
+            @PathVariable("id") int id,
+            Authentication authentication,
+            ModelMap model
+    ) {
+        User currentUser = (User) authentication.getPrincipal();
         User user = userRepository.getById(id);
+
+        model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("user", user);
 
         return "user";
