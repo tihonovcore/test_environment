@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,9 +16,11 @@ public class User implements UserDetails {
     private int id;
 
     @Column(name = "name", nullable = false)
+    @Size(min = 4, max = 255, message = "Name should have length between 4 and 255")
     private String name;
 
     @Column(name = "password")
+    @Size(min = 4, max = 255, message = "Password should have length between 4 and 255")
     private String password;
 
     @ManyToOne(cascade = CascadeType.ALL)
