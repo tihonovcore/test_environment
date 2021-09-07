@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="header">
-    <a class="header_link" th:href="'/user/' + ${user.getId()}">My page</a>
+    <a class="header_link" th:href="'/user/' + ${currentUserId}">My page</a>
     <a class="header_link" href="/tests">All tests</a>
     <a class="header_link" href="/users">All users</a>
 </div>
@@ -25,7 +25,7 @@
     <tr>
         <td>Test id</td>
         <td>Score</td>
-        <td></td>
+        <td th:if="${currentUserId == user.getId()}"></td>
     </tr>
     </thead>
     <tbody>
@@ -43,7 +43,7 @@
     <thead>
     <tr>
         <td>Test id</td>
-        <td></td>
+        <td th:if="${currentUserId == user.getId()}"></td>
     </tr>
     </thead>
     <tbody>
