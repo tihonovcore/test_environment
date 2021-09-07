@@ -1,11 +1,9 @@
 package com.tihonovcore.testenv.controller;
 
-import com.tihonovcore.testenv.model.Answer;
-import com.tihonovcore.testenv.model.AnswerResultView;
-import com.tihonovcore.testenv.model.Result;
-import com.tihonovcore.testenv.model.Test;
+import com.tihonovcore.testenv.model.*;
 import com.tihonovcore.testenv.repository.ResultRepository;
 import com.tihonovcore.testenv.repository.TestRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +24,20 @@ public class ResultController {
         this.testRepository = testRepository;
     }
 
-    @GetMapping("/user/{userId}/result/{resultId}")
+    @GetMapping("/result/{resultId}")
     public String getResult(
-            @PathVariable("userId") int userId,
             @PathVariable("resultId") int resultId,
+            Authentication authentication,
             ModelMap model
     ) {
         Result result = resultRepository.getById(resultId);
         Test test = testRepository.getById(result.getTid());
+        User user = (User) authentication.getPrincipal();
+
+        if (user.getId() != result.getUser().getId() && user.getId() != test.getAuthor().getId()) {
+            System.out.println("No permissions");
+            //TODO
+        }
 
         List<Answer> allAnswers = test.getQuestions().stream()
                 .flatMap(q -> q.getAnswers().stream())
@@ -63,15 +67,21 @@ public class ResultController {
         return "result";
     }
 
-    @GetMapping("/user/{userId}/result/test/{testId}")
+    @GetMapping("/result/test/{testId}")
     public String getAllResultsOfTest(
-            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
+            Authentication authentication,
             ModelMap model
     ) {
         Test test = testRepository.getById(testId);
+        User user = (User) authentication.getPrincipal();
 
-        model.addAttribute("userId", userId);
+        if (user.getId() != test.getAuthor().getId()) {
+            System.out.println("No permissions");
+            //TODO
+        }
+
+        model.addAttribute("userId", user.getId());
         model.addAttribute("title", test.getTitle());
         model.addAttribute("results", test.getResults());
 

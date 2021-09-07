@@ -5,11 +5,11 @@
     <title>Add test</title>
 </head>
 <body>
-<a th:href="'/user/' + ${authorId}">My page</a>
+<a th:href="'/user/' + ${userId}">My page</a>
 
 Add test
 
-<form th:action="'/user/' + ${authorId} + '/tests/new'" method="post">
+<form action="/tests/new" method="post">
     <label>
         Название
         <input type="text" name="title">

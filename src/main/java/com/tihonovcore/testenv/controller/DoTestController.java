@@ -6,6 +6,7 @@ import com.tihonovcore.testenv.model.User;
 import com.tihonovcore.testenv.repository.AnswerRepository;
 import com.tihonovcore.testenv.repository.TestRepository;
 import com.tihonovcore.testenv.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,23 +33,25 @@ public class DoTestController {
         this.answerRepository = answerRepository;
     }
 
-    @GetMapping("/user/{userId}/dotest/{testId}")
+    @GetMapping("/dotest/{testId}")
     public String doTest(
-            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
+            Authentication authentication,
             ModelMap model
     ) {
-        model.addAttribute("user", userRepository.getById(userId));
+        User user = (User) authentication.getPrincipal();
+
+        model.addAttribute("userId", user.getId());
         model.addAttribute("test", testRepository.getById(testId));
 
         return "doTest";
     }
 
-    @PostMapping("/user/{userId}/dotest/{testId}")
+    @PostMapping("/dotest/{testId}")
     public String checkTest(
-            HttpServletRequest request,
-            @PathVariable("userId") int userId,
-            @PathVariable("testId") int testId
+            @PathVariable("testId") int testId,
+            Authentication authentication,
+            HttpServletRequest request
     ) {
         int score = 0;
         List<Integer> answers = new ArrayList<>();
@@ -64,7 +67,9 @@ public class DoTestController {
             }
         }
 
-        User user = userRepository.getById(userId);
+        User user = (User) authentication.getPrincipal();
+        user = userRepository.getById(user.getId());
+
         Test test = testRepository.getById(testId);
 
         Result result = new Result();
@@ -76,6 +81,6 @@ public class DoTestController {
         user.getPass().add(result);
         userRepository.save(user);
 
-        return "redirect:/user/" + userId;
+        return "redirect:/user/" + user.getId();
     }
 }

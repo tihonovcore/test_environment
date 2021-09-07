@@ -5,12 +5,12 @@
     <title th:text="${test.getTitle()}"></title>
 </head>
 <body>
-<a th:href="'/user/' + ${user.getId()}">My page</a>
+<a th:href="'/user/' + ${userId}">My page</a>
 
 <h2 th:text="${test.getTitle()}"></h2>
 <p th:text="${test.getDescription()}"></p>
 
-<form th:action="'/user/' + ${user.getId()} + '/dotest/' + ${test.getId()}" method="post">
+<form th:action="'/dotest/' + ${test.getId()}" method="post">
     <!--/*@thymesVar id="question" type="com.tihonovcore.testenv.model.Question"*/-->
     <div th:each="question : ${test.getQuestions()}">
         <h4 th:text="${question.getQuestion()}"></h4>

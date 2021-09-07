@@ -21,8 +21,9 @@
         <!--/*@thymesVar id="test" type="com.tihonovcore.testenv.model.Test"*/-->
         <td><span th:text="${test.getTitle()}"> Title </span></td>
         <td><span th:text="${test.getDescription()}"> Author </span></td>
-        <td><a th:href="'/user/' + ${userId} + '/dotest/' + ${test.getId()}">Pass test</a></td>
-        <td><a th:href="'/user/' + ${userId} + '/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
+        <td><a th:href="'/dotest/' + ${test.getId()}">Pass test</a></td>
+        <!-- TODO: show only for current user -->
+        <td><a th:href="'/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
     </tr>
     </tbody>
 </table>

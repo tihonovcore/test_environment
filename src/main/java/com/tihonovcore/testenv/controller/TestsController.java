@@ -8,6 +8,7 @@ import com.tihonovcore.testenv.repository.QuestionRepository;
 import com.tihonovcore.testenv.repository.TestRepository;
 import com.tihonovcore.testenv.repository.UserRepository;
 import com.tihonovcore.testenv.validation.QuestionValidator;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,31 +22,35 @@ import java.util.*;
 @Controller
 public class TestsController {
     private final TestRepository testRepository;
-    private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
 
-    public TestsController(TestRepository testRepository, UserRepository userRepository, QuestionRepository questionRepository) {
+    public TestsController(TestRepository testRepository, QuestionRepository questionRepository) {
         this.testRepository = testRepository;
-        this.userRepository = userRepository;
         this.questionRepository = questionRepository;
     }
 
-    @GetMapping("/user/{userId}/tests")
-    public String tests(@PathVariable("userId") int userId, ModelMap model) {
-        model.addAttribute("userId", userId);
+    @GetMapping("/tests")
+    public String tests(Authentication authentication, ModelMap model) {
+        User user = (User) authentication.getPrincipal();
+
+        model.addAttribute("userId", user.getId());
         model.addAttribute("testsList", testRepository.findAll());
+
         return "tests";
     }
 
-    @GetMapping("/user/{userId}/tests/add")
-    public String testsAdd(@PathVariable("userId") int userId, ModelMap model) {
-        model.addAttribute("authorId", userId);
+    @GetMapping("/tests/add")
+    public String testsAdd(Authentication authentication, ModelMap model) {
+        User user = (User) authentication.getPrincipal();
+
+        model.addAttribute("userId", user.getId());
+
         return "addTest";
     }
 
-    @PostMapping("/user/{userId}/tests/new")
-    public String testsNew(@PathVariable("userId") int authorId, HttpServletRequest request) {
-        User author = userRepository.getById(authorId);
+    @PostMapping("/tests/new")
+    public String testsNew(HttpServletRequest request, Authentication authentication) {
+        User author = (User) authentication.getPrincipal();
 
         String title = request.getParameter("title");
         String description = request.getParameter("description");
@@ -56,18 +61,24 @@ public class TestsController {
         test.setDescription(description);
         testRepository.save(test);
 
-        return "redirect:/user/{userId}/tests/" + test.getId() + "/edit";
+        return "redirect:/tests/" + test.getId() + "/edit";
     }
 
-    @GetMapping("/user/{userId}/tests/{testId}/edit")
+    @GetMapping("/tests/{testId}/edit")
     public String testsEdit(
-            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
+            Authentication authentication,
             ModelMap model
     ) {
         Test test = testRepository.getById(testId);
+        User user = (User) authentication.getPrincipal();
 
-        model.addAttribute("userId", userId);
+        if (user.getId() != test.getAuthor().getId()) {
+            System.out.println("No permissions");
+            //TODO
+        }
+
+        model.addAttribute("userId", user.getId());
         model.addAttribute("testId", testId);
         model.addAttribute("title", test.getTitle());
         model.addAttribute("questions", test.getQuestions());
@@ -89,45 +100,68 @@ public class TestsController {
         return answers;
     }
 
-    @PostMapping("/user/{userId}/tests/{testId}/edit/question/add")
+    @PostMapping("/tests/{testId}/edit/question/add")
     public String testsAddNewQuestion(
-            HttpServletRequest request,
-            @PathVariable("userId") int userId,
-            @PathVariable("testId") int testId
+            @PathVariable("testId") int testId,
+            Authentication authentication,
+            HttpServletRequest request
     ) {
+        Test test = testRepository.getById(testId);
+        User user = (User) authentication.getPrincipal();
+
+        if (user.getId() != test.getAuthor().getId()) {
+            System.out.println("No permissions");
+            //TODO
+        }
+
         Question question = new Question();
         question.setQuestion(request.getParameter("question"));
         question.setAnswers(readAnswersFromRequest(request));
 
-        Test test = testRepository.getById(testId);
         test.getQuestions().add(question);
         testRepository.save(test);
 
-        return "redirect:/user/{userId}/tests/{testId}/edit";
+        return "redirect:/tests/{testId}/edit";
     }
 
-    @GetMapping("/user/{userId}/tests/{testId}/question/{questionId}/edit")
+    @GetMapping("/tests/{testId}/question/{questionId}/edit")
     public String editQuestion(
-            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
             @PathVariable("questionId") int questionId,
+            Authentication authentication,
             ModelMap model
     ) {
+        Test test = testRepository.getById(testId);
+        User user = (User) authentication.getPrincipal();
+
+        if (user.getId() != test.getAuthor().getId()) {
+            System.out.println("No permissions");
+            //TODO
+        }
+
         Question question = questionRepository.getById(questionId);
         model.addAttribute("question", question);
-        model.addAttribute("userId", userId);
+        model.addAttribute("userId", user.getId());
         model.addAttribute("testId", testId);
 
         return "editQuestion";
     }
 
-    @PostMapping("/user/{userId}/tests/{testId}/question/{questionId}/edit")
+    @PostMapping("/tests/{testId}/question/{questionId}/edit")
     public ModelAndView editQuestion(
-            HttpServletRequest request,
-            @PathVariable("userId") int userId,
             @PathVariable("testId") int testId,
-            @PathVariable("questionId") int questionId
+            @PathVariable("questionId") int questionId,
+            Authentication authentication,
+            HttpServletRequest request
     ) {
+        Test test = testRepository.getById(testId);
+        User user = (User) authentication.getPrincipal();
+
+        if (user.getId() != test.getAuthor().getId()) {
+            System.out.println("No permissions");
+            //TODO
+        }
+
         List<Answer> answers = readAnswersFromRequest(request);
 
         Question question = questionRepository.getById(questionId);
@@ -140,7 +174,7 @@ public class TestsController {
             result.addObject("question", question);
             result.addObject("messages", QuestionValidator.messages);
             result.addObject("hasErrors", true);
-            result.addObject("userId", userId);
+            result.addObject("userId", user.getId());
             result.addObject("testId", testId);
 
             return result;
@@ -148,6 +182,6 @@ public class TestsController {
 
         questionRepository.save(question);
 
-        return new ModelAndView("redirect:/user/{userId}/tests/{testId}/edit");
+        return new ModelAndView("redirect:/tests/{testId}/edit");
     }
 }

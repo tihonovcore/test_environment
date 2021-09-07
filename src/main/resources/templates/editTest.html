@@ -8,7 +8,7 @@
 </head>
 <body>
 <a th:href="'/user/' + ${userId}">My page</a>
-<a th:href="'/user/' + ${userId} + '/tests'">All tests</a>
+<a href="/tests">All tests</a>
 
 <h3 th:text="${title}"></h3>
 <table>
@@ -25,14 +25,14 @@
     <tr th:each="question : ${questions}">
         <td th:text="${question.getQuestion()}"></td>
         <td th:text="${question.getAnswers()}"></td>
-        <td><a th:href="'/user/' + ${userId} + '/tests/' + ${testId} + '/question/' + ${question.getId()} + '/edit'">Edit question</a></td>
+        <td><a th:href="'/tests/' + ${testId} + '/question/' + ${question.getId()} + '/edit'">Edit question</a></td>
     </tr>
     </tbody>
 </table>
 
 <hr>
 
-<form th:action="'/user/' + ${userId} + '/tests/' + ${testId} + '/edit/question/add'" method="post">
+<form th:action="'/tests/' + ${testId} + '/edit/question/add'" method="post">
     <div>
         <label>
             Question

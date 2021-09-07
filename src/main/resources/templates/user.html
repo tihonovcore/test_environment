@@ -9,7 +9,7 @@
 <a href="/logout">Logout</a>
 
 <h4>Passed tests</h4>
-<a th:href="'/user/' + ${user.getId()} + '/tests/'">All tests</a>
+<a th:href="'/tests/'">All tests</a>
 <table>
     <thead>
     <tr>
@@ -23,13 +23,14 @@
         <!--/*@thymesVar id="result" type="com.tihonovcore.testenv.model.Result"*/-->
         <td><span th:text="${result.getTid()}"> Test id </span></td>
         <td><span th:text="${result.getScore()}"> Score </span></td>
-        <td><a th:href="'/user/' + ${user.getId()} + '/result/' + ${result.getId()}">Full result</a></td>
+        <!-- TODO: show only for current user -->
+        <td><a th:href="'/result/' + ${result.getId()}">Full result</a></td>
     </tr>
     </tbody>
 </table>
 
 <h4>Authored tests</h4>
-<a th:href="'/user/' + ${user.getId()} + '/tests/add'">Add new test</a>
+<a href="/tests/add">Add new test</a>
 <table>
     <thead>
     <tr>
@@ -41,7 +42,10 @@
     <tr th:each="test : ${user.getAuthor()}">
         <!--/*@thymesVar id="test" type="com.tihonovcore.testenv.model.Test"*/-->
         <td><span th:text="${test.getTitle()}"> Test title </span></td>
-        <td><a th:href="'/user/' + ${user.getId()} + '/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
+        <!-- TODO: show only for current user -->
+        <td><a th:href="'/result/test/' + ${test.getId()}">All results</a></td>
+        <!-- TODO: show only for current user -->
+        <td><a th:href="'/tests/' + ${test.getId()} + '/edit'">Edit test</a></td>
     </tr>
     </tbody>
 </table>
