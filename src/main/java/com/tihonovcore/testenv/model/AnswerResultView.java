@@ -1,9 +1,9 @@
 package com.tihonovcore.testenv.model;
 
 public class AnswerResultView {
-    private String question;
-    private String correctAnswer;
-    private String actualAnswer;
+    private final String question;
+    private final String correctAnswer;
+    private final String actualAnswer;
 
     public AnswerResultView(String question, String correctAnswer, String actualAnswer) {
         this.question = question;

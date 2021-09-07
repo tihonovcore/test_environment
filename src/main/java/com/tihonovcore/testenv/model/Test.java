@@ -34,16 +34,6 @@ public class Test {
 
     public Test() {}
 
-    public Test(Test test) {
-        this.id = test.id;
-        this.title = test.title;
-        this.description = test.description;
-        this.questions = new ArrayList<>();
-        for (Question q : test.questions) {
-            this.questions.add(new Question(q));
-        }
-    }
-
     public int getId() {
         return id;
     }

@@ -24,15 +24,6 @@ public class Question {
 
     public Question() {}
 
-    public Question(Question question) {
-        this.id = question.id;
-        this.question = question.question;
-        this.answers = new ArrayList<>();
-        for (Answer a : question.answers) {
-            this.answers.add(new Answer(a));
-        }
-    }
-
     public int getId() {
         return id;
     }

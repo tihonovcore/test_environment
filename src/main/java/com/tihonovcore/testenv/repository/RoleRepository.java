@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RoleRepository extends JpaRepository<Role, Integer> {
     @Query("select r from roles r where r.roleName = 'USER'")
-    public Role userRole();
+    Role userRole();
 }

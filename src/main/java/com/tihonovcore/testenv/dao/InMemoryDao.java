@@ -26,7 +26,7 @@ public class InMemoryDao {
         Test test = new Test();
         test.setId(freeId++);
         test.setTitle("test title");
-        test.setDescription("test descr");
+        test.setDescription("test description");
         test.setQuestions(List.of(question));
 
         tests.add(test);

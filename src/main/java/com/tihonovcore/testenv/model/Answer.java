@@ -19,12 +19,6 @@ public class Answer {
 
     public Answer() {}
 
-    public Answer(Answer answer) {
-        this.id = answer.id;
-        this.answer = answer.answer;
-        this.isCorrect = answer.isCorrect;
-    }
-
     public int getId() {
         return id;
     }

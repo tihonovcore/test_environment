@@ -1,6 +1,5 @@
 package com.tihonovcore.testenv.service;
 
-import com.tihonovcore.testenv.model.Role;
 import com.tihonovcore.testenv.model.User;
 import com.tihonovcore.testenv.repository.RoleRepository;
 import com.tihonovcore.testenv.repository.UserRepository;
