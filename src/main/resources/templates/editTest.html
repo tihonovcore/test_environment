@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="/editTest.css">
 </head>
 <body>
-<a th:href="'/user/' + ${userId}">My page</a>
-<a href="/tests">All tests</a>
+<div class="header">
+    <a class="header_link" th:href="'/user/' + ${userId}">My page</a>
+    <a class="header_link" href="/tests">All tests</a>
+    <a class="header_link" href="/users">All users</a>
+</div>
+
 
 <h3 th:text="${title}"></h3>
 <table>

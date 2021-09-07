@@ -5,17 +5,20 @@
     <title>User</title>
 </head>
 <body>
+<div class="header">
+    <a class="header_link" th:href="'/user/' + ${user.getId()}">My page</a>
+    <a class="header_link" href="/tests">All tests</a>
+    <a class="header_link" href="/users">All users</a>
+</div>
+
 <h4 th:text="${user.getName()}"></h4>
 
 <div th:if="${user.getId() == currentUserId}">
+    <a href="/tests/add">Add new test</a>
     <a href="/logout">Logout</a>
-</div>
-<div th:if="${user.getId() != currentUserId}">
-    <a th:href="'/user/' + ${currentUserId}">My page</a>
 </div>
 
 <h4>Passed tests</h4>
-<a th:href="'/tests/'">All tests</a>
 <table>
     <thead>
     <tr>
@@ -35,7 +38,6 @@
 </table>
 
 <h4>Authored tests</h4>
-<a href="/tests/add">Add new test</a>
 <table>
     <thead>
     <tr>

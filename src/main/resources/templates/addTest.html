@@ -5,8 +5,11 @@
     <title>Add test</title>
 </head>
 <body>
-<a th:href="'/user/' + ${userId}">My page</a>
-
+<div class="header">
+    <a class="header_link" th:href="'/user/' + ${userId}">My page</a>
+    <a class="header_link" href="/tests">All tests</a>
+    <a class="header_link" href="/users">All users</a>
+</div>
 Add test
 
 <form action="/tests/new" method="post">

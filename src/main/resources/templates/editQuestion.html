@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="/editTest.css">
 </head>
 <body>
-<a th:href="'/user/' + ${userId}">My page</a>
+<div class="header">
+    <a class="header_link" th:href="'/user/' + ${userId}">My page</a>
+    <a class="header_link" href="/tests">All tests</a>
+    <a class="header_link" href="/users">All users</a>
+</div>
 
 <form th:action="'/tests/' + ${testId} + '/question/' + ${questionId} + '/edit'" method="post">
     <div>
